@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root { height: 100%; }
+body { margin: 0; -webkit-font-smoothing: antialiased; }
+
+.cf { font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+.cf-tight { letter-spacing: -0.03em; }
+
+@keyframes cf-rise { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+.cf-rise { animation: cf-rise .45s cubic-bezier(.2,.7,.3,1) both }
+
+@keyframes cf-pop { 0% { transform: scale(.94); opacity: 0 } 60% { transform: scale(1.02) } 100% { transform: scale(1); opacity: 1 } }
+.cf-pop { animation: cf-pop .28s cubic-bezier(.2,.7,.3,1) both }
+
+@keyframes cf-float { 0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)) } 50% { transform: translateY(-12px) rotate(var(--r, 0deg)) } }
+.cf-float { animation: cf-float 6s ease-in-out infinite }
+
+@keyframes cf-shimmer { 100% { transform: translateX(100%) } }
+.cf-skeleton { position: relative; overflow: hidden }
+.cf-skeleton::after {
+  content: ""; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(148,163,184,.22), transparent);
+  animation: cf-shimmer 1.4s infinite;
+}
+
+@keyframes cf-fall { 0% { transform: translateY(-10vh) rotate(0); opacity: 1 } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0 } }
+.cf-confetti { position: fixed; top: 0; width: 9px; height: 14px; border-radius: 2px; animation: cf-fall linear forwards; z-index: 80 }
+
+@keyframes cf-ping2 { 0% { transform: scale(1); opacity: .7 } 100% { transform: scale(2.2); opacity: 0 } }
+.cf-livedot::after { content: ""; position: absolute; inset: 0; border-radius: 9999px; background: inherit; animation: cf-ping2 1.8s ease-out infinite }
+
+.cf-lift { transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease, border-color .22s ease }
+.cf-lift:hover { transform: translateY(-4px) }
+
+.cf-scroll::-webkit-scrollbar { height: 0; width: 0 }
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-rise, .cf-pop, .cf-float, .cf-lift, .cf-confetti, .cf-livedot::after {
+    animation: none !important; transition: none !important; transform: none !important;
+  }
+}

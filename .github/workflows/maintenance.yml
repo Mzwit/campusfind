@@ -1,0 +1,24 @@
+# Two jobs in one: keeps the free Supabase project from pausing after 7 days
+# of inactivity, and clears purged photos out of the storage bucket.
+name: CampusFind maintenance
+
+on:
+  schedule:
+    - cron: "0 4 */3 * *"   # every third day
+  workflow_dispatch:
+
+jobs:
+  maintain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Ping the database and clear orphaned files
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: npm run gc
